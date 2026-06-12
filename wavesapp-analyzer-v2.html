@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waves Home Appliances | WAVESAPP Investment Analyzer 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#050D1F; --navy2:#0D1E3A; --navy3:#152849;
+  --blue:#3B82F6; --blue2:#60A5FA;
+  --teal:#00C9A7; --teal2:#00A68D;
+  --green:#10B981; --red:#EF4444; --gold:#F59E0B; --orange:#F97316; --purple:#8B5CF6;
+  --text:#E2E8F0; --sub:#94A3B8; --border:rgba(0,201,167,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--navy);color:var(--text);font-family:'Roboto',sans-serif;min-height:100vh;}
+h1,h2,h3,h4,h5,button,.kpi-value,.card-title,.nav-title{font-family:'Montserrat',sans-serif;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 500px at 50% -100px,rgba(0,201,167,0.07),transparent),
+             radial-gradient(ellipse 700px 600px at 100% 100%,rgba(59,130,246,0.06),transparent);}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(5,13,31,0.95);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:66px;}
+.nav-logo{display:flex;align-items:center;gap:14px;}
+.nav-badge{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--red));
+           display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:14px;
+           box-shadow:0 0 18px rgba(249,115,22,0.3);}
+.nav-title{font-size:15px;font-weight:700;color:#fff;}
+.nav-sub{font-size:10px;color:var(--sub);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.12);
+            border:1px solid rgba(16,185,129,0.35);padding:4px 14px;border-radius:20px;
+            font-size:11px;color:var(--green);font-weight:700;letter-spacing:.5px;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* DATA BAR */
+.data-bar{background:linear-gradient(90deg,rgba(249,115,22,0.07),rgba(59,130,246,0.06));
+          border-bottom:1px solid rgba(249,115,22,0.12);padding:7px 28px;
+          display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:11.5px;}
+.db-item{display:flex;align-items:center;gap:6px;}
+.db-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* TABS */
+.tab-bar{position:sticky;top:66px;z-index:190;background:var(--navy2);
+         border-bottom:1px solid var(--border);padding:0 28px;
+         display:flex;overflow-x:auto;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{padding:14px 18px;border:none;background:transparent;color:var(--sub);cursor:pointer;
+         font-size:11.5px;font-weight:700;font-family:'Montserrat',sans-serif;
+         border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+         text-transform:uppercase;letter-spacing:.5px;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--orange);border-bottom-color:var(--orange);}
+
+main{padding:24px 28px;max-width:1220px;margin:0 auto;position:relative;z-index:1;}
+.section{display:none;animation:fadeIn .3s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* CARDS */
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;}
+.card-title{font-size:11px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;}
+
+/* PRICE HERO */
+.price-hero{background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid rgba(249,115,22,0.3);
+            border-radius:18px;padding:24px 28px;margin-bottom:18px;
+            display:flex;align-items:center;gap:32px;flex-wrap:wrap;border-left:4px solid var(--orange);}
+.price-big{font-size:44px;font-weight:900;color:var(--orange);font-family:'Montserrat',sans-serif;line-height:1;}
+.price-lbl{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;}
+.price-chg-neg{color:var(--red);font-size:13px;font-weight:700;margin-top:4px;}
+.price-chg-pos{color:var(--green);font-size:13px;font-weight:700;margin-top:4px;}
+.pdiv{border-left:1px solid var(--border);padding-left:24px;}
+.pmeta{font-size:12px;color:var(--sub);margin-bottom:4px;}
+.pmeta strong{color:var(--text);}
+.hold-pill{display:inline-block;background:rgba(245,158,11,0.15);border:2px solid var(--gold);
+          color:var(--gold);padding:10px 28px;border-radius:30px;font-size:20px;
+          font-weight:900;letter-spacing:2px;font-family:'Montserrat',sans-serif;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:18px;}
+.kpi{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:16px;
+     border-top:3px solid var(--orange);transition:transform .2s;}
+.kpi:hover{transform:translateY(-2px);}
+.kpi-label{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.kpi-value{font-size:21px;font-weight:800;color:#fff;margin-bottom:3px;}
+.kpi-sub{font-size:11px;}
+.up{color:var(--green);}.down{color:var(--red);}.neutral{color:var(--sub);}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+.tbl th{background:rgba(249,115,22,0.07);color:var(--orange);padding:9px 13px;text-align:left;
+        font-size:10px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);
+        font-family:'Montserrat',sans-serif;}
+.tbl td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text);}
+.tbl tr:hover td{background:rgba(255,255,255,0.02);}
+.tbl .row-bold td{font-weight:700;color:#fff;background:rgba(255,255,255,0.03);}
+.tbl .row-section td{color:var(--orange);font-weight:700;font-size:10px;letter-spacing:.08em;
+                     text-transform:uppercase;background:rgba(249,115,22,0.05);padding-top:12px;}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.b-green{background:rgba(16,185,129,0.15);color:var(--green);}
+.b-red{background:rgba(239,68,68,0.15);color:var(--red);}
+.b-yellow{background:rgba(245,158,11,0.15);color:var(--gold);}
+.b-blue{background:rgba(59,130,246,0.15);color:var(--blue2);}
+.b-orange{background:rgba(249,115,22,0.15);color:var(--orange);}
+.b-teal{background:rgba(0,201,167,0.15);color:var(--teal);}
+
+/* CHARTS */
+.chart-wrap{position:relative;height:270px;}
+.chart-wrap-lg{position:relative;height:330px;}
+.chart-wrap-sm{position:relative;height:220px;}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.charts-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media(max-width:750px){.charts-2,.charts-3{grid-template-columns:1fr;}.price-hero{flex-direction:column;}.pdiv{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:14px;}}
+
+/* HIGHLIGHT BOXES */
+.hbox{border-radius:12px;padding:15px 18px;margin-bottom:14px;border-left:4px solid;}
+.hbox-green{background:rgba(16,185,129,0.07);border-color:var(--green);}
+.hbox-orange{background:rgba(249,115,22,0.07);border-color:var(--orange);}
+.hbox-gold{background:rgba(245,158,11,0.07);border-color:var(--gold);}
+.hbox-red{background:rgba(239,68,68,0.07);border-color:var(--red);}
+.hbox-blue{background:rgba(59,130,246,0.07);border-color:var(--blue2);}
+.hbox-teal{background:rgba(0,201,167,0.07);border-color:var(--teal);}
+.hbox-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;font-family:'Montserrat',sans-serif;}
+.hbox-text{font-size:13px;color:var(--text);line-height:1.65;}
+
+/* SWOT */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:16px;overflow:hidden;}
+.swot-box{padding:18px 20px;}
+.swot-s{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);}
+.swot-w{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);}
+.swot-o{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);}
+.swot-t{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);}
+.swot-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-family:'Montserrat',sans-serif;}
+.swot-s .swot-lbl{color:var(--green);}.swot-w .swot-lbl{color:var(--red);}
+.swot-o .swot-lbl{color:var(--blue2);}.swot-t .swot-lbl{color:var(--gold);}
+.swot-box li{font-size:12.5px;color:var(--text);margin-bottom:6px;margin-left:14px;line-height:1.5;}
+@media(max-width:600px){.swot-grid{grid-template-columns:1fr;}}
+
+/* CALC */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:700px){.calc-grid{grid-template-columns:1fr;}}
+.input-group{margin-bottom:16px;}
+.input-group label{display:block;font-size:11px;color:var(--sub);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+input[type=range]{width:100%;accent-color:var(--orange);cursor:pointer;height:5px;}
+.range-val{font-size:28px;font-weight:800;color:var(--orange);font-family:'Montserrat',sans-serif;}
+.result-box{background:var(--navy3);border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;}
+.rec-pill{display:inline-block;padding:12px 36px;border-radius:30px;font-size:28px;font-weight:900;margin:12px 0;letter-spacing:2px;font-family:'Montserrat',sans-serif;}
+.rec-buy{background:rgba(16,185,129,0.18);color:var(--green);border:2px solid var(--green);}
+.rec-hold{background:rgba(245,158,11,0.18);color:var(--gold);border:2px solid var(--gold);}
+.rec-sell{background:rgba(239,68,68,0.18);color:var(--red);border:2px solid var(--red);}
+
+/* INSIDER ALERT */
+.insider-alert{background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.4);border-radius:14px;padding:18px 22px;margin-bottom:18px;display:flex;gap:16px;align-items:flex-start;}
+.ia-icon{font-size:26px;flex-shrink:0;margin-top:2px;}
+.ia-title{font-weight:800;font-size:12px;color:var(--gold);margin-bottom:8px;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:.8px;}
+.ia-body{font-size:12.5px;color:var(--text);line-height:1.65;}
+.ia-body ul{padding-left:18px;margin:8px 0;}
+.ia-body li{margin-bottom:5px;}
+.ia-note{font-size:11.5px;color:var(--sub);margin-top:10px;font-style:italic;border-top:1px solid rgba(245,158,11,0.2);padding-top:10px;}
+
+/* STRUCT BANNER */
+.struct-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;background:var(--navy2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:18px;}
+@media(max-width:600px){.struct-grid{grid-template-columns:1fr;}}
+.sg-left{padding:20px 24px;border-right:1px solid var(--border);background:rgba(249,115,22,0.05);}
+.sg-mid{display:flex;align-items:center;justify-content:center;padding:0 14px;font-size:22px;color:var(--sub);}
+.sg-right{padding:20px 24px;background:rgba(0,201,167,0.04);}
+.sg-tag{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.sg-left .sg-tag{color:var(--orange);}
+.sg-right .sg-tag{color:var(--teal);}
+.sg-name{font-weight:700;font-size:15px;color:#fff;margin-bottom:5px;}
+.sg-desc{font-size:12px;color:var(--sub);line-height:1.6;}
+
+/* FINAL REC */
+.final-rec{background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(249,115,22,0.05));
+           border:2px solid var(--gold);border-radius:18px;padding:30px;text-align:center;margin-bottom:18px;}
+.final-rec-main{font-size:56px;font-weight:900;color:var(--gold);font-family:'Montserrat',sans-serif;}
+.final-rec-label{font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin-bottom:6px;}
+.final-rec-price{font-size:22px;font-weight:700;color:var(--orange);}
+
+/* METRIC BARS */
+.metric-bar-wrap{margin-bottom:10px;}
+.metric-bar-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
+.metric-bar-track{height:8px;border-radius:4px;background:rgba(255,255,255,0.07);overflow:hidden;}
+.metric-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.fn{font-size:11px;color:var(--sub);margin-top:10px;font-style:italic;}
+footer{border-top:1px solid var(--border);padding:20px 28px;text-align:center;margin-top:20px;position:relative;z-index:1;}
+footer p{font-size:11px;color:var(--sub);line-height:1.9;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-badge">W</div>
+    <div>
+      <div class="nav-title">Waves Home Appliances — Analyzer</div>
+      <div class="nav-sub">PSX: WAVESAPP · Cable &amp; Electrical Goods</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="live-badge"><span class="live-dot"></span>Q1 2026 Filed ✓</div>
+    <div style="font-size:11px;color:var(--sub)">Jun 11, 2026</div>
+  </div>
+</nav>
+
+<!-- DATA BAR -->
+<div class="data-bar">
+  <div class="db-item"><span class="db-dot" style="background:var(--orange)"></span><span style="color:var(--orange)">FY2025 Audited ✓ (Filed Apr 2026)</span></div>
+  <div class="db-item"><span class="db-dot" style="background:var(--teal)"></span><span style="color:var(--teal)">Q1 2026 Filed Apr 30, 2026 ✓</span></div>
+  <div class="db-item"><span class="db-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">⚠️ Insider Activity — May/Jun 2026</span></div>
+  <div class="db-item"><span class="db-dot" style="background:var(--green)"></span><span style="color:var(--green)">WAVESAPP: PKR 9.45 (Jun 11, 2026)</span></div>
+  <div class="db-item" style="margin-left:auto"><span style="color:var(--sub)">Prepared by: Alishba Mushtaq</span></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview',this)">📊 Overview</button>
+  <button class="tab-btn" onclick="showTab('financials',this)">💰 Financials</button>
+  <button class="tab-btn" onclick="showTab('ratios',this)">📐 Ratios</button>
+  <button class="tab-btn" onclick="showTab('history',this)">📈 History</button>
+  <button class="tab-btn" onclick="showTab('industry',this)">🏭 Industry</button>
+  <button class="tab-btn" onclick="showTab('competitors',this)">🏆 Peers</button>
+  <button class="tab-btn" onclick="showTab('calculator',this)">🧮 Rate Calculator</button>
+  <button class="tab-btn" onclick="showTab('swot',this)">🎯 SWOT</button>
+  <button class="tab-btn" onclick="showTab('recommendation',this)">⭐ Recommendation</button>
+</div>
+
+<main>
+
+<!-- =========== OVERVIEW =========== -->
+<div id="overview" class="section active">
+
+  <div class="price-hero">
+    <div>
+      <div class="price-lbl">WAVESAPP Current Price · PSX</div>
+      <div class="price-big">PKR 9.45</div>
+      <div class="price-chg-pos">▲ +0.34 (+3.73%) — Jun 11, 2026</div>
+      <div style="font-size:11px;color:var(--sub);margin-top:4px;">52-Wk Range: PKR 6.99 – 12.30 &nbsp;·&nbsp; Volume: 13.38M shares</div>
+    </div>
+    <div class="pdiv">
+      <div class="pmeta">Market Cap (WAVESAPP): <strong>PKR 2.53Bn</strong></div>
+      <div class="pmeta">Free Float: <strong>50% (133.94Mn shares)</strong></div>
+      <div class="pmeta">FY2025 EPS: <strong style="color:var(--orange)">PKR 0.71 ✓</strong></div>
+      <div class="pmeta">P/E (TTM): <strong>13.31x &nbsp;|&nbsp; Forward: 9.84x</strong></div>
+      <div class="pmeta">P/B Ratio: <strong style="color:var(--teal)">0.31x (BV: Rs.30.43)</strong></div>
+    </div>
+    <div class="pdiv">
+      <div class="pmeta">WAVES (Parent): <strong>PKR 11.11 ▲ +0.13</strong></div>
+      <div class="pmeta">Sector: <strong>Cable &amp; Electrical Goods</strong></div>
+      <div class="pmeta">D/E Ratio: <strong style="color:var(--red)">141.62% — High Leverage</strong></div>
+      <div class="pmeta">Next Earnings: <strong style="color:var(--teal)">H1 2026 — Aug 2026</strong></div>
+    </div>
+    <div class="pdiv">
+      <div class="hold-pill">⚖️ HOLD</div>
+      <div style="font-size:11px;color:var(--sub);margin-top:8px;text-align:center;">Mixed picture — monitor</div>
+    </div>
+  </div>
+
+  <div class="hbox hbox-orange">
+    <div class="hbox-title" style="color:var(--orange)">🚀 Latest Performance — FY2025 + Q1 2026</div>
+    <div class="hbox-text">WAVESAPP posted <strong style="color:var(--orange)">FY2025 PAT of PKR 189.2Mn (+23.4% YoY)</strong> — audited and filed April 2026. Revenue grew to <strong>PKR 3.67Bn (+15.7%)</strong>. EPS reached PKR 0.71 (+24.6% YoY). Q1 2026 shows continued momentum: PAT PKR 63.9Mn, EPS <strong style="color:var(--green)">Rs.0.24 (+35.2% YoY)</strong>. Parent company insider activity in May–June 2026 established a clear floor at PKR 8.15–8.25.</div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi" style="border-top-color:var(--orange)"><div class="kpi-label">WAVESAPP Price</div><div class="kpi-value">PKR 9.45</div><div class="kpi-sub up">▲ +3.73% today</div></div>
+    <div class="kpi" style="border-top-color:var(--green)"><div class="kpi-label">FY2025 Revenue</div><div class="kpi-value">PKR 3.67Bn</div><div class="kpi-sub up">▲ +15.7% YoY (Audited ✓)</div></div>
+    <div class="kpi" style="border-top-color:var(--teal)"><div class="kpi-label">FY2025 PAT</div><div class="kpi-value">PKR 189.2Mn</div><div class="kpi-sub up">▲ +23.4% YoY (Audited ✓)</div></div>
+    <div class="kpi" style="border-top-color:var(--blue2)"><div class="kpi-label">FY2025 EPS</div><div class="kpi-value">PKR 0.71</div><div class="kpi-sub up">▲ +24.6% from 0.57 (FY24)</div></div>
+    <div class="kpi" style="border-top-color:var(--green)"><div class="kpi-label">Q1 2026 EPS</div><div class="kpi-value">PKR 0.24</div><div class="kpi-sub up">▲ +35.2% YoY ✓</div></div>
+    <div class="kpi" style="border-top-color:var(--orange)"><div class="kpi-label">Q1 2026 Sales</div><div class="kpi-value">PKR 1.00Bn</div><div class="kpi-sub neutral">Filed Apr 30, 2026 ✓</div></div>
+    <div class="kpi" style="border-top-color:var(--gold)"><div class="kpi-label">Forward P/E</div><div class="kpi-value">9.84x</div><div class="kpi-sub up">↓ Compressed (undervalued signal)</div></div>
+    <div class="kpi" style="border-top-color:var(--red)"><div class="kpi-label">Debt-to-Equity</div><div class="kpi-value">141.62%</div><div class="kpi-sub down">High leverage — monitor</div></div>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">WAVESAPP Revenue vs PAT Trend (PKR Bn)</div><div class="chart-wrap"><canvas id="revPATChart"></canvas></div></div>
+    <div class="card"><div class="card-title">EPS Growth Trend (PKR)</div><div class="chart-wrap"><canvas id="epsOverviewChart"></canvas></div></div>
+  </div>
+
+  <div class="struct-grid">
+    <div class="sg-left">
+      <div class="sg-tag">PSX: WAVES · Holding Parent</div>
+      <div class="sg-name">Waves Corporation Limited</div>
+      <div class="sg-desc">Acts as the <strong>holding company</strong>. Oversees brand management, real-estate interests via <strong>Waves Builders &amp; Developers</strong>, and the nationwide retail arm (<strong>Waves Marketplace Ltd</strong> — 100+ Waves Plus stores). Does not directly manufacture the appliances sold in stores.</div>
+    </div>
+    <div class="sg-mid">⬇</div>
+    <div class="sg-right">
+      <div class="sg-tag">PSX: WAVESAPP · Pure-Play Operations</div>
+      <div class="sg-name">Waves Home Appliances Limited</div>
+      <div class="sg-desc">The <strong>pure-play manufacturing entity</strong> — designs, assembles and sells the refrigerators, ACs, deep freezers, and washing machines in stores. Listed separately since the 2022 restructuring of the former Samin Textiles Ltd shell. Formerly WHALE (2022).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Company Profile</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td><strong>Full Name</strong></td><td>Waves Home Appliances Limited</td><td><strong>PSX Ticker</strong></td><td style="color:var(--orange)"><strong>WAVESAPP</strong></td></tr>
+        <tr><td><strong>Formerly</strong></td><td>Samin Textiles Limited (restructured 2022)</td><td><strong>Parent (WAVES)</strong></td><td>Waves Corporation Limited</td></tr>
+        <tr><td><strong>Sector (PSX Official)</strong></td><td><strong>Cable &amp; Electrical Goods</strong></td><td><strong>Share Price</strong></td><td style="color:var(--orange)"><strong>PKR 9.45 (Jun 11, 2026)</strong></td></tr>
+        <tr><td><strong>Incorporated</strong></td><td>Nov 27, 1989</td><td><strong>52-Wk Range</strong></td><td>PKR 6.99 – 12.30</td></tr>
+        <tr><td><strong>CEO</strong></td><td>Mr. Safder Hussain Tariq</td><td><strong>Chairman</strong></td><td>Mr. Khalid Azeem</td></tr>
+        <tr><td><strong>Company Secretary</strong></td><td>Mr. Muhammad Tayyab</td><td><strong>Auditor</strong></td><td>Grant Thornton Anjum Rahman, CAs</td></tr>
+        <tr><td><strong>Registered Address</strong></td><td>8.7 KM Multan Road, Lahore</td><td><strong>Registrar</strong></td><td>Corplink (Pvt) Ltd, 1-K Model Town, Lahore</td></tr>
+        <tr><td><strong>Products</strong></td><td colspan="3">Refrigerators · ACs · Deep Freezers · Washing Machines · Water Heaters · Microwaves · LED TVs · Cooking Ranges</td></tr>
+        <tr><td><strong>Retail Network</strong></td><td>100+ Waves Plus stores (Waves Marketplace Ltd)</td><td><strong>Next Earnings</strong></td><td><strong style="color:var(--teal)">H1 2026 — Due August 2026</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- =========== FINANCIALS =========== -->
+<div id="financials" class="section">
+  <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--orange);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">Multi-Year Financial Performance</h2>
+    <p style="color:var(--sub);font-size:13px;">WAVESAPP (Waves Home Appliances Limited) — PKR (000s). All FY2025 data <strong style="color:var(--orange)">audited &amp; filed April 2026</strong>.</p>
+  </div>
+
+  <div class="hbox hbox-teal">
+    <div class="hbox-title" style="color:var(--teal)">⚡ Restatement Note</div>
+    <div class="hbox-text">FY2022 shows the pre-spin-off consolidated entity. From FY2023, WAVESAPP reports as a standalone listed entity after Samin Textiles restructuring. Revenue decline in FY2023 is <strong>structural (entity separation)</strong>, not an operational collapse.</div>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">WAVESAPP Annual Revenue (PKR Bn)</div><div class="chart-wrap"><canvas id="revBarChart"></canvas></div></div>
+    <div class="card"><div class="card-title">Profit After Tax — Annual (PKR Mn)</div><div class="chart-wrap"><canvas id="patBarChart"></canvas></div></div>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">Gross &amp; Net Profit Margins (%)</div><div class="chart-wrap"><canvas id="marginLineChart"></canvas></div></div>
+    <div class="card"><div class="card-title">EPS Progression (PKR)</div><div class="chart-wrap"><canvas id="epsBarChart"></canvas></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">WAVESAPP Income Statement — PKR (000s) · Audited Per PSX</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <thead><tr><th>Line Item</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th style="color:var(--green)">FY2025 ✓</th><th style="color:var(--teal)">Q1 2026 ✓</th></tr></thead>
+      <tbody>
+        <tr class="row-bold"><td>Sales / Revenue</td><td>7,422,503</td><td>4,176,119</td><td>3,170,183</td><td style="color:var(--teal)">3,666,719</td><td style="color:var(--orange)">1,002,109</td></tr>
+        <tr><td>Gross Profit Margin</td><td class="neutral">—</td><td>24.83%</td><td>27.96%</td><td style="color:var(--green)">27.44%</td><td class="neutral">—</td></tr>
+        <tr class="row-bold"><td>Profit After Tax (PAT)</td><td>13,128</td><td>115,717</td><td>153,288</td><td style="color:var(--teal)">189,204</td><td style="color:var(--green)">63,859</td></tr>
+        <tr><td>Net Profit Margin</td><td class="neutral">—</td><td>2.77%</td><td>4.84%</td><td style="color:var(--green)">5.16%</td><td style="color:var(--green)">6.37%</td></tr>
+        <tr><td>EPS — Basic (PKR)</td><td>0.05</td><td>0.43</td><td>0.57</td><td style="color:var(--orange)"><strong>0.71</strong></td><td style="color:var(--green)"><strong>0.24</strong></td></tr>
+        <tr><td>EPS Growth</td><td>+42.9%</td><td style="color:var(--green)">+1,175%</td><td style="color:var(--green)">+32.6%</td><td style="color:var(--green)">+24.6%</td><td style="color:var(--green)">+35.2%</td></tr>
+        <tr><td>Dividend (PKR)</td><td class="neutral">Nil</td><td class="neutral">Nil</td><td class="neutral">Nil</td><td class="neutral">Nil</td><td class="neutral">—</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="fn">✓ = Audited annual/quarterly data per PSX. Source: dps.psx.com.pk/company/WAVESAPP</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">WAVES Corporation (Parent) — Historical Highlights</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <thead><tr><th>Year</th><th>Revenue (PKR Bn)</th><th>YoY Growth</th><th>PAT</th><th>EPS (PKR)</th><th>Key Note</th></tr></thead>
+      <tbody>
+        <tr><td>FY2020</td><td style="color:var(--red)">7.80Bn</td><td style="color:var(--red)">−17.7%</td><td style="color:var(--red)">−189Mn</td><td class="neutral">−ve</td><td class="neutral">COVID-19 disruption</td></tr>
+        <tr><td>FY2021</td><td style="color:var(--green)">11.3Bn</td><td style="color:var(--green)">+44.9%</td><td style="color:var(--green)">+228Mn</td><td>—</td><td class="neutral">Recovery; local sourcing shift</td></tr>
+        <tr><td>FY2022</td><td style="color:var(--green)">13.0Bn</td><td style="color:var(--green)">+15.0%</td><td style="color:var(--green)">+259Mn</td><td>—</td><td class="neutral">Pre-spin-off consolidated peak</td></tr>
+        <tr><td>FY2023</td><td style="color:var(--red)">5.21Bn*</td><td style="color:var(--red)">−59.9%*</td><td style="color:var(--red)">−47Mn</td><td class="neutral">−ve</td><td class="neutral">WAVESAPP spin-off structural effect</td></tr>
+        <tr><td>FY2024</td><td style="color:var(--red)">3.94Bn</td><td style="color:var(--red)">−24.2%</td><td style="color:var(--green)">+1,087Mn ★</td><td style="color:var(--green)">3.86</td><td class="neutral">PAT +323% — landmark profit year</td></tr>
+        <tr class="row-bold"><td>FY2025 ✓</td><td style="color:var(--teal)">4.78Bn</td><td style="color:var(--teal)">+21.2%</td><td style="color:var(--orange)">~450Mn ✓</td><td>~1.6</td><td class="neutral">Revenue recovery; audited Apr 2026</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="fn">*FY2023 restated post WAVESAPP spin-off. ★ FY2024 PAT +323% includes non-recurring gains. ✓ = Audited &amp; filed.</p>
+  </div>
+</div>
+
+<!-- =========== RATIOS =========== -->
+<div id="ratios" class="section">
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">Gross &amp; Net Margin Trend (%)</div><div class="chart-wrap"><canvas id="ratioMarginChart"></canvas></div></div>
+    <div class="card"><div class="card-title">EPS Growth YoY (%)</div><div class="chart-wrap"><canvas id="epsGrowthChart"></canvas></div></div>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card">
+      <div class="card-title">Valuation Ratios — WAVESAPP</div>
+      <table class="tbl">
+        <thead><tr><th>Ratio</th><th>Value</th><th>Signal</th></tr></thead>
+        <tbody>
+          <tr><td>P/E Ratio (TTM)</td><td style="color:var(--orange)">13.31x</td><td><span class="badge b-yellow">Reasonable</span></td></tr>
+          <tr><td>Forward P/E (Q1 2026 run-rate)</td><td style="color:var(--green)">9.84x</td><td><span class="badge b-green">Compressed — undervalued signal</span></td></tr>
+          <tr><td>Price/Book (P/B)</td><td style="color:var(--teal)">0.31x</td><td><span class="badge b-green">Well below book value</span></td></tr>
+          <tr><td>Book Value Per Share</td><td>PKR 30.43</td><td><span class="badge b-teal">Q1 2026</span></td></tr>
+          <tr><td>PEG Ratio (FY2025)</td><td style="color:var(--green)">0.54x</td><td><span class="badge b-green">Growth at fair price</span></td></tr>
+          <tr><td>Price/Sales</td><td>~0.6x</td><td><span class="badge b-orange">Low — revenue undervalued</span></td></tr>
+          <tr><td>Debt-to-Equity</td><td style="color:var(--red)">141.62%</td><td><span class="badge b-red">High leverage — monitor</span></td></tr>
+          <tr><td>Dividend Yield</td><td class="neutral">Nil</td><td><span class="badge" style="background:rgba(148,163,184,0.1);color:var(--sub)">100% retention</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">WAVESAPP Profitability — Audited Actuals</div>
+      <table class="tbl">
+        <thead><tr><th>Ratio</th><th>FY2024</th><th>FY2025 ✓</th><th>Q1 2026 ✓</th></tr></thead>
+        <tbody>
+          <tr><td>Gross Profit Margin</td><td>27.96%</td><td style="color:var(--teal)">27.44%</td><td class="neutral">—</td></tr>
+          <tr><td>Net Profit Margin</td><td>4.84%</td><td style="color:var(--green)">5.16%</td><td style="color:var(--green)">6.37%</td></tr>
+          <tr><td>EPS Growth</td><td style="color:var(--green)">+32.6%</td><td style="color:var(--green)">+24.6%</td><td style="color:var(--green)">+35.2%</td></tr>
+          <tr><td>EPS (PKR)</td><td>0.57</td><td style="color:var(--orange)"><strong>0.71</strong></td><td style="color:var(--green)"><strong>0.24</strong></td></tr>
+          <tr><td>Cash Flow/Share (Q1 2026)</td><td class="neutral">0.07</td><td class="neutral">—</td><td style="color:var(--green)">PKR 1.02</td></tr>
+          <tr><td>52-Wk Range (WAVESAPP)</td><td colspan="3">PKR 6.99 – 12.30</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Margin Visual Comparison</div>
+    <div class="charts-2">
+      <div>
+        <p style="font-size:11px;color:var(--sub);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Gross Profit Margin (%)</p>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2022</span><span style="color:var(--blue2)">~25%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:65%;background:var(--blue2)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2023</span><span style="color:var(--gold)">24.83%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:60%;background:var(--gold)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2024</span><span style="color:var(--teal)">27.96%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:68%;background:var(--teal)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2025 ✓</span><span style="color:var(--green)">27.44%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:67%;background:var(--green)"></div></div></div>
+      </div>
+      <div>
+        <p style="font-size:11px;color:var(--sub);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Net Profit Margin (%)</p>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2022</span><span style="color:var(--sub)">~0.2%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:4%;background:var(--gold)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2023</span><span style="color:var(--blue2)">2.77%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:20%;background:var(--blue2)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2024</span><span style="color:var(--teal)">4.84%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:35%;background:var(--teal)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>FY2025 ✓</span><span style="color:var(--green)">5.16%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:38%;background:var(--green)"></div></div></div>
+        <div class="metric-bar-wrap"><div class="metric-bar-label"><span>Q1 2026 ✓</span><span style="color:var(--orange)">6.37%</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:46%;background:var(--orange)"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== HISTORY =========== -->
+<div id="history" class="section">
+  <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--gold);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">Revenue Growth History &amp; Milestones</h2>
+    <p style="color:var(--sub);font-size:13px;">Corporate history from founding (1971) through restructuring and PSX listing milestones to Q1 2026.</p>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">WAVES Revenue YoY Growth (%)</div><div class="chart-wrap"><canvas id="wavesGrowthChart"></canvas></div></div>
+    <div class="card"><div class="card-title">WAVESAPP PAT vs EPS Progression</div><div class="chart-wrap"><canvas id="patEpsChart"></canvas></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key Corporate Milestones</div>
+    <table class="tbl">
+      <thead><tr><th>Year</th><th>Event / Milestone</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>1971</td><td>Founded; introduced Pakistan's first deep freezer</td><td class="neutral">Market pioneer, brand creation</td></tr>
+        <tr><td>1976</td><td>Launched refrigerator range</td><td class="neutral">Product width expanded</td></tr>
+        <tr><td>2002</td><td>Entered split air conditioner segment</td><td class="neutral">Seasonal revenue diversification</td></tr>
+        <tr><td>2004</td><td>Pioneered washing machines in Pakistan</td><td class="neutral">Category creation advantage</td></tr>
+        <tr><td>2017</td><td>Merger with Cool Industries; renamed Waves Singer Pakistan</td><td class="neutral">Scale consolidation</td></tr>
+        <tr><td>2022</td><td>WAVESAPP restructuring — Samin Textiles shell converted &amp; listed</td><td><span class="badge b-orange">Pure-play listed</span></td></tr>
+        <tr><td>FY2024</td><td>WAVES PAT surges +323% to PKR 1.09Bn; EPS PKR 3.86</td><td><span class="badge b-green">Landmark profit year</span></td></tr>
+        <tr class="row-bold"><td>FY2025</td><td>WAVESAPP Revenue +15.7%; PAT +23.4%; EPS PKR 0.71 (audited)</td><td><span class="badge b-green">Momentum building</span></td></tr>
+        <tr><td>Apr 2026</td><td>FY2025 annual + Q1 2026 quarterly results filed to PSX</td><td><span class="badge b-teal">Full disclosure ✓</span></td></tr>
+        <tr><td>May–Jun 2026</td><td>Parent Waves Corp large-scale WAVESAPP insider trades (floor ~8.15–8.25)</td><td><span class="badge b-yellow">Floor support established</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">WAVESAPP Forward Estimates — Audited + Projected</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <thead><tr><th>Metric</th><th>FY2023A</th><th>FY2024A</th><th>FY2025A ✓</th><th>FY2026E</th></tr></thead>
+      <tbody>
+        <tr class="row-bold"><td>Revenue (PKR 000s)</td><td>4,176,119</td><td>3,170,183</td><td style="color:var(--teal)">3,666,719</td><td>~4,200,000</td></tr>
+        <tr><td>PAT (PKR 000s)</td><td>115,717</td><td>153,288</td><td style="color:var(--teal)">189,204</td><td>~220,000</td></tr>
+        <tr><td>EPS (PKR)</td><td>0.43</td><td>0.57</td><td style="color:var(--orange)"><strong>0.71</strong></td><td>~0.82</td></tr>
+        <tr><td>Gross Margin</td><td>24.83%</td><td>27.96%</td><td style="color:var(--green)">27.44%</td><td>~27–29%</td></tr>
+        <tr><td>EPS Growth</td><td style="color:var(--green)">+1,175%</td><td style="color:var(--green)">+32.6%</td><td style="color:var(--green)">+24.6%</td><td>~+15%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="fn">✓ = Audited actuals per PSX. E = Forward estimate based on Q1 2026 run-rate. Not investment advice.</p>
+  </div>
+</div>
+
+<!-- =========== INDUSTRY =========== -->
+<div id="industry" class="section">
+  <div style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.05));border:1px solid rgba(59,130,246,0.25);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--blue);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">Pakistan Appliance Market Context</h2>
+    <p style="color:var(--sub);font-size:13px;line-height:1.7;">Pakistan's household appliance market is at an inflection point — SBP rate cuts from 22% to 10.5% are dramatically improving hire-purchase affordability. However, skyrocketing electricity tariffs create a structural headwind for heavy-load appliances like ACs and deep freezers.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi" style="border-top-color:var(--teal)"><div class="kpi-label">SBP Policy Rate</div><div class="kpi-value">10.5%</div><div class="kpi-sub up">↓ From 22% peak (Jun 2024)</div></div>
+    <div class="kpi" style="border-top-color:var(--green)"><div class="kpi-label">Consumer Demand</div><div class="kpi-value">Recovering</div><div class="kpi-sub up">Rate cuts boosting HP credit</div></div>
+    <div class="kpi" style="border-top-color:var(--blue2)"><div class="kpi-label">PKR / USD</div><div class="kpi-value">~278</div><div class="kpi-sub neutral">Relatively stable</div></div>
+    <div class="kpi" style="border-top-color:var(--orange)"><div class="kpi-label">HH Penetration</div><div class="kpi-value">&lt; World Avg</div><div class="kpi-sub neutral">Long-run demand gap</div></div>
+    <div class="kpi" style="border-top-color:var(--red)"><div class="kpi-label">Electricity Tariffs</div><div class="kpi-value">Sky-High</div><div class="kpi-sub down">Structural demand barrier</div></div>
+    <div class="kpi" style="border-top-color:var(--purple)"><div class="kpi-label">Waves Retail Network</div><div class="kpi-value">100+</div><div class="kpi-sub neutral">Waves Plus stores nationwide</div></div>
+  </div>
+
+  <div class="hbox hbox-red" style="margin-bottom:18px;">
+    <div class="hbox-title" style="color:var(--red)">⚡ Energy Tariff Elasticity — Key Structural Threat</div>
+    <div class="hbox-text">Skyrocketing domestic electricity tariffs serve as a <strong>structural barrier to appliance adoption</strong> across Pakistan. Consumers are actively delaying purchases of heavy-load cooling appliances — Deep Freezers and Air Conditioners — shifting the investment narrative toward <strong>solar-coupled or extreme-inverter technology models</strong>. WAVES must pivot product strategy toward energy-efficient SKUs to counter this demand headwind.</div>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">SBP Rate Cycle vs PSX KSE-100 (Historical)</div><div class="chart-wrap"><canvas id="sbpCycleChart"></canvas></div></div>
+    <div class="card"><div class="card-title">Pakistan Appliance Demand Drivers (Signal Score)</div><div class="chart-wrap"><canvas id="demandRadarChart"></canvas></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sector Tailwinds &amp; Headwinds</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div style="color:var(--green);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">✅ Tailwinds</div>
+        <table class="tbl">
+          <thead><tr><th>Factor</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td>SBP rate cuts (22% → 10.5%)</td><td><span class="badge b-green">High ▲</span></td></tr>
+            <tr><td>Declining inflation → real income rising</td><td><span class="badge b-green">High ▲</span></td></tr>
+            <tr><td>Pakistan housing/real estate boom</td><td><span class="badge b-green">High ▲</span></td></tr>
+            <tr><td>Growing double-income nuclear families</td><td><span class="badge b-teal">Med ▲</span></td></tr>
+            <tr><td>Local manufacturing vs import substitution</td><td><span class="badge b-teal">Med ▲</span></td></tr>
+            <tr><td>IMF program — macro stability</td><td><span class="badge b-teal">Med ▲</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="color:var(--red);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">⚠️ Headwinds</div>
+        <table class="tbl">
+          <thead><tr><th>Factor</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td>⚡ Skyrocketing electricity tariffs</td><td><span class="badge b-red">High ▼</span></td></tr>
+            <tr><td>Chinese grey-market imports</td><td><span class="badge b-red">High ▼</span></td></tr>
+            <tr><td>Low HH penetration = slow adoption</td><td><span class="badge b-yellow">Med ▼</span></td></tr>
+            <tr><td>High debt burden (PKR 6.81Bn)</td><td><span class="badge b-red">High ▼</span></td></tr>
+            <tr><td>Dawlance &amp; Haier — 10–20x scale</td><td><span class="badge b-yellow">Med ▼</span></td></tr>
+            <tr><td>Negative FCF (−PKR 353Mn TTM)</td><td><span class="badge b-red">High ▼</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== COMPETITORS =========== -->
+<div id="competitors" class="section">
+  <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--orange);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">Pakistan Appliance Peers</h2>
+    <p style="color:var(--sub);font-size:13px;">WAVESAPP's true sector is <strong style="color:var(--orange)">Cable &amp; Electrical Goods</strong> per PSX. Standard scrapers may show "Textile Mill Products" due to former Samin Textiles origin — this is incorrect since the 2022 restructuring.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Pakistan Listed Appliance Peers</div>
+    <div style="overflow-x:auto;">
+    <table class="tbl">
+      <thead><tr><th>Company</th><th>Ticker</th><th>PSX Sector</th><th>Mkt Cap</th><th>Revenue FY25</th><th>GP Margin</th><th>NP Margin</th><th>EPS FY25</th><th>P/E</th><th>Signal</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(249,115,22,0.06);">
+          <td><strong style="color:var(--orange)">Waves Corporation ★</strong></td><td>WAVES</td><td>Cable &amp; Elec. Goods</td>
+          <td>PKR 3.13Bn</td><td style="color:var(--teal)">PKR 4.78Bn</td><td>~30%</td><td>~9%</td><td>~1.6</td><td style="color:var(--green)">~8.2x</td>
+          <td><span class="badge b-yellow">HOLD</span></td>
+        </tr>
+        <tr style="background:rgba(0,201,167,0.04);">
+          <td><strong style="color:var(--teal)">Waves Home Appl. ★</strong></td><td>WAVESAPP</td><td><strong>Cable &amp; Elec. Goods</strong></td>
+          <td>PKR 2.53Bn</td><td style="color:var(--teal)">PKR 3.67Bn ✓</td><td style="color:var(--green)">27.44%</td><td style="color:var(--green)">5.16%</td><td style="color:var(--orange)">0.71 ✓</td><td>13.31x</td>
+          <td><span class="badge b-yellow">HOLD</span></td>
+        </tr>
+        <tr>
+          <td>Pak Elektron (PEL)</td><td>PAEL</td><td>Cable &amp; Elec. Goods</td>
+          <td>~PKR 24Bn</td><td>~PKR 90Bn</td><td>~22%</td><td>~4%</td><td>—</td><td>~12x</td>
+          <td><span class="badge b-blue">WATCH</span></td>
+        </tr>
+        <tr>
+          <td>Dawlance</td><td class="neutral">—</td><td class="neutral">Unlisted / Private</td>
+          <td class="neutral">Private</td><td>~PKR 60Bn+</td><td class="neutral">—</td><td class="neutral">—</td><td class="neutral">—</td><td class="neutral">—</td>
+          <td><span class="badge" style="background:rgba(148,163,184,0.1);color:var(--sub)">PRIV</span></td>
+        </tr>
+        <tr>
+          <td>Haier Pakistan</td><td class="neutral">—</td><td class="neutral">Unlisted / Foreign</td>
+          <td class="neutral">Private</td><td>~PKR 80Bn+</td><td class="neutral">—</td><td class="neutral">—</td><td class="neutral">—</td><td class="neutral">—</td>
+          <td><span class="badge" style="background:rgba(148,163,184,0.1);color:var(--sub)">PRIV</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="fn">✓ WAVESAPP sector confirmed as Cable &amp; Electrical Goods per PSX official listing (dps.psx.com.pk/company/WAVESAPP).</p>
+  </div>
+
+  <div class="charts-2" style="margin-bottom:18px;">
+    <div class="card"><div class="card-title">WAVESAPP vs WAVES — Margin Comparison (%)</div><div class="chart-wrap"><canvas id="peerMarginChart"></canvas></div></div>
+    <div class="card"><div class="card-title">WAVESAPP Competitive Position</div><div class="chart-wrap"><canvas id="radarChart"></canvas></div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;">
+    <div class="card" style="border-color:rgba(249,115,22,0.3);">
+      <div style="font-size:1.5rem;margin-bottom:8px;">🧊</div>
+      <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--orange);">Pioneer Brand</h4>
+      <p style="font-size:12px;color:var(--sub);">Pakistan's first deep freezer (1971). 50+ years market leadership. Strong brand moat in mid-market. "NAAM HI KAFI HAI."</p>
+    </div>
+    <div class="card" style="border-color:rgba(0,201,167,0.3);">
+      <div style="font-size:1.5rem;margin-bottom:8px;">🏪</div>
+      <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--teal);">Retail Network Moat</h4>
+      <p style="font-size:12px;color:var(--sub);">100+ Waves Plus retail stores via Waves Marketplace Ltd. Direct hire-purchase availability across tier-2/3 cities Pakistan-wide.</p>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,0.3);">
+      <div style="font-size:1.5rem;margin-bottom:8px;">⚠️</div>
+      <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--red);">Scale Disadvantage</h4>
+      <p style="font-size:12px;color:var(--sub);">Dawlance &amp; Haier operate at 10–20x WAVES revenue. Chinese brands apply aggressive price pressure in the mass-market segment.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =========== CALCULATOR =========== -->
+<div id="calculator" class="section">
+  <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--orange);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">SBP Policy Rate Impact Calculator</h2>
+    <p style="color:var(--sub);font-size:13px;">Drag the slider to model how SBP rate changes affect WAVESAPP consumer demand, debt servicing costs, and investment signal. Current rate: <strong style="color:var(--orange)">10.5% (Jun 2026)</strong>.</p>
+  </div>
+
+  <div class="calc-grid">
+    <div>
+      <div class="card">
+        <div class="card-title">Set SBP Policy Rate</div>
+        <div class="input-group">
+          <label>SBP Policy Rate (%)</label>
+          <div class="range-val" id="rateDisplay">10.5%</div>
+          <input type="range" min="5" max="25" value="10.5" step="0.5" oninput="updateCalc(this.value)">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:4px;"><span>5% (Ultra Low)</span><span>10.5% — Current ↑</span><span>25% (Crisis)</span></div>
+        </div>
+        <div style="background:var(--navy3);border-radius:10px;padding:13px;border-left:3px solid var(--orange);font-size:12.5px;color:var(--text);line-height:1.65;" id="scenDesc">SBP easing cycle active (10.5%). Hire-purchase affordability improving. WAVESAPP benefits from lower debt servicing costs on PKR 6.81Bn total debt. Consumer appliance demand recovering.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Live Projection — WAVESAPP</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Consumer Demand</td><td id="demandOut"><span class="badge b-green">Recovering ↑</span></td></tr>
+            <tr><td>Hire-Purchase / Financing</td><td id="financeOut"><span class="badge b-green">Easing — HP improving</span></td></tr>
+            <tr><td>WAVES Debt Servicing (PKR 6.81Bn)</td><td id="debtOut"><span class="badge b-green">Cost declining ↓</span></td></tr>
+            <tr><td>PSX Sentiment</td><td id="psxOut"><span class="badge b-green">Bullish ↑↑</span></td></tr>
+            <tr><td>FY2026 Revenue Growth Est.</td><td id="revOut"><span class="badge b-teal">+15% to +25%</span></td></tr>
+            <tr><td>WAVESAPP Target Price</td><td id="tpOut"><span style="color:var(--orange);font-weight:700">PKR 12 – 16</span></td></tr>
+            <tr><td>Upside from PKR 9.45</td><td id="upsideOut"><span style="color:var(--green);font-weight:700">+27% to +69%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="height:100%;">
+        <div class="card-title">Investment Signal</div>
+        <div class="result-box">
+          <div style="font-size:12px;color:var(--sub);margin-bottom:6px;">At SBP Rate of <strong id="rateInSignal" style="color:var(--orange);">10.5%</strong></div>
+          <div class="rec-pill rec-hold" id="recPill">HOLD</div>
+          <div id="recDesc" style="color:var(--sub);font-size:12.5px;line-height:1.65;margin-top:10px;">SBP easing improving hire-purchase volumes. WAVESAPP Q1 2026 EPS PKR 0.24 (+35.2% YoY) — strong momentum. High D/E 141.62% and energy tariff headwinds temper upside. Hold, monitor H1 2026 results (Aug 2026).</div>
+          <hr class="divider">
+          <div style="font-size:11px;color:var(--sub);margin-bottom:6px;">WAVESAPP Target Price Range</div>
+          <div style="font-size:22px;font-weight:700;color:var(--orange);" id="targetPriceOut">PKR 12 – PKR 16</div>
+          <div style="font-size:11px;color:var(--sub);margin-top:4px;" id="targetBasisOut">P/B approach: 0.31x vs BV Rs.30.43 + earnings recovery</div>
+        </div>
+        <hr class="divider">
+        <div class="card-title">Rate Sensitivity Reference</div>
+        <table class="tbl">
+          <thead><tr><th>SBP Rate</th><th>Signal</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td>Below 8%</td><td><span class="badge b-green">Strong BUY</span></td><td>Max HP affordability, demand boom</td></tr>
+            <tr><td>8–10%</td><td><span class="badge b-green">BUY</span></td><td>Credit expanding, debt costs low</td></tr>
+            <tr><td>10–13% <span class="badge b-orange" style="font-size:9px;">NOW</span></td><td><span class="badge b-yellow">HOLD</span></td><td>Recovery — watch H1 2026</td></tr>
+            <tr><td>13–17%</td><td><span class="badge b-yellow">HOLD / LIGHTEN</span></td><td>Credit tightening, watch debt</td></tr>
+            <tr><td>Above 17%</td><td><span class="badge b-red">SELL</span></td><td>Demand freeze; PKR 6.81Bn debt risk</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Why SBP Rate Matters More for WAVES</div>
+    <div style="font-size:13px;color:var(--text);line-height:1.75;">
+      WAVES revenues are <strong>100% PKR-domestic</strong>. Rate changes affect WAVES through three direct channels:<br><br>
+      <strong style="color:var(--orange)">1. Hire-Purchase Demand</strong> — lower rates make monthly payments affordable for ACs, freezers, washing machines at Waves Plus stores.<br><br>
+      <strong style="color:var(--teal)">2. Debt Servicing</strong> — WAVES carries PKR 6.81Bn in total debt. Every 100bps cut reduces annual interest burden by <strong>~PKR 68Mn</strong>.<br><br>
+      <strong style="color:var(--blue2)">3. PSX Sentiment</strong> — rate cuts drive retail investor flows into mid/small caps like WAVES &amp; WAVESAPP, expanding valuation multiples.
+    </div>
+  </div>
+</div>
+
+<!-- =========== SWOT =========== -->
+<div id="swot" class="section">
+  <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px;border-left:4px solid var(--orange);">
+    <h2 style="font-size:19px;color:#fff;margin-bottom:6px;">SWOT Analysis — June 2026</h2>
+    <p style="color:var(--sub);font-size:13px;">Incorporating FY2025 audited results, Q1 2026 filing, Pakistan macro, insider activity, and competitive landscape.</p>
+  </div>
+  <div class="swot-grid" style="margin-bottom:18px;">
+    <div class="swot-box swot-s"><div class="swot-lbl">💪 Strengths</div><ul>
+      <li><strong>Pioneer brand:</strong> Pakistan's first deep freezer (1971) — 50+ years market leadership</li>
+      <li><strong>Nationwide retail moat:</strong> 100+ Waves Plus stores via Waves Marketplace Ltd</li>
+      <li><strong>Resilient gross margins:</strong> 27–30% maintained across FY2023–2025 (audited)</li>
+      <li><strong>Landmark WAVES FY2024 PAT:</strong> +323% to PKR 1.09Bn — strongest profit year on record</li>
+      <li><strong>Revenue recovery:</strong> FY2025 +21.2% (WAVES); WAVESAPP Q1 2026 on track</li>
+      <li><strong>Dual-listed structure:</strong> WAVES + WAVESAPP give investors choice of exposure</li>
+      <li><strong>Parent floor support:</strong> Insider trades in May–Jun 2026 at PKR 8.15–8.25</li>
+    </ul></div>
+    <div class="swot-box swot-w"><div class="swot-lbl">⚠️ Weaknesses</div><ul>
+      <li><strong>High D/E ratio:</strong> 141.62% — significant leverage risk vs peers</li>
+      <li><strong>Extreme net debt:</strong> −PKR 6.74Bn vs PKR 2.53Bn WAVESAPP market cap</li>
+      <li><strong>Negative FCF:</strong> −PKR 353Mn TTM — no internal cash generation</li>
+      <li><strong>Low capital returns:</strong> ROE ~3%, ROIC ~2% — poor capital efficiency</li>
+      <li><strong>No dividend:</strong> Zero payout since restructuring (100% retention)</li>
+      <li><strong>Thin margins at WAVESAPP:</strong> Net margin 5.16% — vulnerable to cost shocks</li>
+      <li><strong>Small market cap:</strong> PKR 2.53Bn = thin float, limited institutional interest</li>
+    </ul></div>
+    <div class="swot-box swot-o"><div class="swot-lbl">🚀 Opportunities</div><ul>
+      <li><strong>SBP easing (22% → 10.5%):</strong> Hire-purchase affordability improving materially</li>
+      <li><strong>Below-average penetration:</strong> Pakistan well below world average — massive long-run upside</li>
+      <li><strong>Housing boom:</strong> Real estate growth drives first-buy appliance demand</li>
+      <li><strong>WAVESAPP growth:</strong> PAT +23.4% in FY2025; EPS +35.2% in Q1 2026 — independently profitable</li>
+      <li><strong>P/B deep discount:</strong> 0.31x vs book value Rs.30.43 — asset valuation recovery potential</li>
+      <li><strong>Energy-efficient SKU pivot:</strong> Inverter ACs &amp; solar-coupled freezers address tariff barrier</li>
+      <li><strong>Double-income families:</strong> Rising trend increases discretionary appliance spend</li>
+    </ul></div>
+    <div class="swot-box swot-t"><div class="swot-lbl">🔴 Threats</div><ul>
+      <li><strong>⚡ Energy tariff elasticity:</strong> Skyrocketing electricity bills suppressing demand for ACs and deep freezers — forcing product pivot toward inverter/solar-coupled models</li>
+      <li><strong>Scale gap:</strong> Dawlance &amp; Haier at 10–20x WAVES revenue with deeper pockets</li>
+      <li><strong>Chinese grey-market imports:</strong> Price-aggressive in mass-market segments</li>
+      <li><strong>Debt vulnerability:</strong> PKR 6.81Bn exposed to any rate reversal</li>
+      <li><strong>Negative FCF risk:</strong> May require equity dilution or further borrowing</li>
+      <li><strong>Pakistan macro risks:</strong> PKR depreciation, IMF conditionality pressures</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- =========== RECOMMENDATION =========== -->
+<div id="recommendation" class="section">
+
+  <div class="insider-alert">
+    <div class="ia-icon">⚠️</div>
+    <div>
+      <div class="ia-title">Substantial Shareholder Movement Alert — May/June 2026</div>
+      <div class="ia-body">
+        <strong>Parent Company (Waves Corporation Limited) executed high-volume restructuring of its WAVESAPP position on open market:</strong>
+        <ul>
+          <li><strong>May 29, 2026:</strong> Simultaneously sold 17.2M shares at Rs. 8.15 and bought back 16.99M shares at Rs. 8.25 in the same trading session.</li>
+          <li><strong>June 1, 2026:</strong> Continued open-market accumulation, purchasing 200,500 additional shares at Rs. 8.25.</li>
+        </ul>
+        <div class="ia-note">Analyst Note: This high-volume simultaneous buy/sell activity signals the parent is actively consolidating control and has defined a psychological floor support zone for WAVESAPP near <strong>Rs. 8.15–8.25</strong>. Current price Rs.9.45 is 15–16% above this floor.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="final-rec">
+    <div class="final-rec-label">Investment Recommendation — WAVESAPP</div>
+    <div class="final-rec-main">⚖️ HOLD</div>
+    <div style="font-size:15px;color:var(--text);margin:8px 0;">Waves Home Appliances Limited (PSX: WAVESAPP)</div>
+    <div class="final-rec-price">Target Price: PKR 12 – PKR 16</div>
+    <div style="font-size:12px;color:var(--sub);margin-top:6px;">WAVESAPP at PKR 9.45 | Implied Upside: +27% to +69% | No Dividend</div>
+    <div style="font-size:12px;color:var(--sub);margin-top:4px;">Parent floor support: PKR 8.15–8.25 | High Risk — D/E 141.62%</div>
+  </div>
+
+  <div class="hbox hbox-orange">
+    <div class="hbox-title" style="color:var(--orange)">📌 Valuation Basis</div>
+    <div class="hbox-text">Trailing P/E 13.31x on FY2025 EPS Rs.0.71; Forward P/E compressed to 9.84x on Q1 2026 run-rate. <strong>P/B 0.31x is the key signal</strong> — WAVESAPP trades at a massive discount to book value (Rs.30.43), implying significant NAV recovery potential. D/E 141.62% is the primary risk. <strong>Bull case:</strong> SBP rate falls below 9%, energy tariff relief, EPS hits Rs.1.0+ → PKR 18+. <strong>Bear case:</strong> Rate reversal + electricity tariffs deepen demand suppression → PKR 6–8. Parent established a clear floor at Rs.8.15–8.25.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key Investment Pillars</div>
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Pillar</th><th>Evidence</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>EPS Growth Trajectory</strong></td><td>FY2025 EPS PKR 0.71 (+24.6%); Q1 2026 EPS PKR 0.24 (+35.2%)</td><td><span class="badge b-green">✓ Confirmed</span></td></tr>
+        <tr><td>2</td><td><strong>Deep P/B Discount</strong></td><td>P/B 0.31x on BV Rs.30.43 — trading at steep discount to asset value</td><td><span class="badge b-green">✓ Undervalued signal</span></td></tr>
+        <tr><td>3</td><td><strong>Gross Margin Resilience</strong></td><td>27–28% maintained FY2023–2025; Q1 2026 net margin 6.37% (improving)</td><td><span class="badge b-green">✓ On Track</span></td></tr>
+        <tr><td>4</td><td><strong>SBP Rate Tailwind</strong></td><td>10.5% (from 22% peak) — HP affordability improving; debt costs declining</td><td><span class="badge b-green">✓ Supportive</span></td></tr>
+        <tr><td>5</td><td><strong>Parent Floor Support</strong></td><td>Waves Corp insider trades May–Jun 2026 define support at PKR 8.15–8.25</td><td><span class="badge b-teal">✓ Established</span></td></tr>
+        <tr><td>6</td><td><strong>D/E 141.62% — Watch</strong></td><td>High leverage; PKR 6.81Bn debt exposed to rate reversal</td><td><span class="badge b-red">⚠ Key Risk</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key Risks to Monitor</div>
+    <table class="tbl">
+      <thead><tr><th>Risk Factor</th><th>Probability</th><th>Impact</th><th>Mitigation Watch</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Electricity tariffs suppressing AC/freezer demand</strong></td><td><span class="badge b-red">High</span></td><td><span class="badge b-red">High</span></td><td class="neutral">Monitor inverter product pipeline; energy-efficient SKU launches</td></tr>
+        <tr><td><strong>Debt refinancing risk (D/E 141.62%)</strong></td><td><span class="badge b-yellow">Medium</span></td><td><span class="badge b-red">High</span></td><td class="neutral">SBP rate trajectory; debt maturity schedule</td></tr>
+        <tr><td><strong>Continued negative FCF</strong></td><td><span class="badge b-red">High</span></td><td><span class="badge b-red">High</span></td><td class="neutral">Operating cash flow in H1 2026 results (Aug 2026)</td></tr>
+        <tr><td><strong>Chinese grey-market price pressure</strong></td><td><span class="badge b-red">High</span></td><td><span class="badge b-yellow">Medium</span></td><td class="neutral">Brand loyalty; retail network depth in tier-2/3</td></tr>
+        <tr><td><strong>FY2026 revenue misses expectations</strong></td><td><span class="badge b-yellow">Medium</span></td><td><span class="badge b-yellow">Medium</span></td><td class="neutral">H1 2026 results due August 2026</td></tr>
+        <tr><td><strong>SBP rate reversal</strong></td><td><span class="badge b-green">Low</span></td><td><span class="badge b-red">High</span></td><td class="neutral">IMF program on track; unlikely near-term</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Project Details</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td><strong>Prepared by</strong></td><td><strong>Alishba Mushtaq</strong></td></tr>
+        <tr><td><strong>Data Sources</strong></td><td>PSX Data Portal (dps.psx.com.pk) · CapitalStake · BR Research · CorporateWatch.com.pk · Waves Corporate Briefing Nov 2025</td></tr>
+        <tr><td><strong>Latest Data</strong></td><td>Q1 2026 (Apr 30, 2026) | FY2025 Audited (Apr 2026) | Price Jun 11, 2026</td></tr>
+        <tr><td><strong>Date</strong></td><td>June 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>Prepared by <strong style="color:var(--orange)">Alishba Mushtaq</strong> · Waves Home Appliances Limited (PSX: WAVESAPP) · Investment Analysis · June 2026</p>
+  <p>Sources: PSX Data Portal (dps.psx.com.pk/company/WAVESAPP) · CapitalStake · BR Research · StockAnalysis.com · CorporateWatch.com.pk · Waves Corporate Briefing Nov 2025</p>
+  <p>Sector: <strong>Cable &amp; Electrical Goods</strong> (PSX official). FY2025 WAVESAPP figures are <strong>audited actuals filed April 2026</strong>. Next earnings: H1 2026 due August 2026.</p>
+  <p style="color:#475569;margin-top:4px;">For educational purposes only. Not investment advice. Always do your own research (DYOR).</p>
+</footer>
+
+<script>
+Chart.defaults.color='#94A3B8';
+Chart.defaults.borderColor='rgba(255,255,255,0.05)';
+Chart.defaults.font.family="'Roboto',sans-serif";
+
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const C={orange:'#F97316',teal:'#00C9A7',blue:'#3B82F6',blue2:'#60A5FA',green:'#10B981',red:'#EF4444',gold:'#F59E0B',purple:'#8B5CF6',sub:'#94A3B8'};
+
+// 1. Revenue vs PAT (Overview)
+new Chart(document.getElementById('revPATChart'),{type:'bar',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025','Q1 2026'],
+  datasets:[
+    {label:'Revenue (PKR Bn)',data:[7.42,4.18,3.17,3.67,1.00],backgroundColor:'rgba(249,115,22,0.25)',borderColor:C.orange,borderWidth:2,borderRadius:4,yAxisID:'y'},
+    {label:'PAT (PKR Mn)',data:[13.1,115.7,153.3,189.2,63.9],type:'line',borderColor:C.green,backgroundColor:'rgba(16,185,129,0.08)',tension:0.4,fill:true,pointRadius:5,pointBackgroundColor:C.green,borderWidth:2.5,yAxisID:'y2'}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{position:'left',grid:{color:'rgba(255,255,255,0.04)'},title:{display:true,text:'Revenue (PKR Bn)',color:C.orange}},y2:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'PAT (PKR Mn)',color:C.green}},x:{grid:{display:false}}}}
+});
+
+// 2. EPS Overview
+new Chart(document.getElementById('epsOverviewChart'),{type:'line',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025','Q1 2026'],
+  datasets:[{label:'EPS (PKR)',data:[0.05,0.43,0.57,0.71,0.24],borderColor:C.gold,backgroundColor:'rgba(245,158,11,0.1)',tension:0.4,fill:true,pointRadius:7,pointBackgroundColor:C.gold,borderWidth:2.5,
+    pointStyle:'circle'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},min:0},x:{grid:{display:false}}}}
+});
+
+// 3. Revenue Bar (Financials)
+new Chart(document.getElementById('revBarChart'),{type:'bar',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025 ✓','Q1 2026 ✓'],
+  datasets:[{label:'Revenue (PKR Bn)',data:[7.42,4.18,3.17,3.67,1.00],
+    backgroundColor:['rgba(59,130,246,0.6)','rgba(245,158,11,0.6)','rgba(239,68,68,0.5)','rgba(0,201,167,0.75)','rgba(249,115,22,0.8)'],
+    borderColor:[C.blue2,C.gold,C.red,C.teal,C.orange],borderWidth:2,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}}}
+});
+
+// 4. PAT Bar (Financials)
+new Chart(document.getElementById('patBarChart'),{type:'bar',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025 ✓','Q1 2026 ✓'],
+  datasets:[{label:'PAT (PKR Mn)',data:[13.1,115.7,153.3,189.2,63.9],
+    backgroundColor:['rgba(239,68,68,0.5)','rgba(0,201,167,0.6)','rgba(59,130,246,0.65)','rgba(16,185,129,0.8)','rgba(249,115,22,0.8)'],
+    borderColor:[C.red,C.teal,C.blue2,C.green,C.orange],borderWidth:2,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}}}
+});
+
+// 5. Margin Line Chart
+new Chart(document.getElementById('marginLineChart'),{type:'line',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025','Q1 2026'],
+  datasets:[
+    {label:'Gross Margin %',data:[null,24.83,27.96,27.44,null],borderColor:C.teal,backgroundColor:'rgba(0,201,167,0.1)',tension:0.4,fill:true,pointRadius:5,pointBackgroundColor:C.teal,borderWidth:2.5},
+    {label:'Net Margin %',data:[0.18,2.77,4.84,5.16,6.37],borderColor:C.orange,backgroundColor:'transparent',tension:0.4,pointRadius:5,pointBackgroundColor:C.orange,borderWidth:2.5,borderDash:[5,3]}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true}}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+
+// 6. EPS Bar (Financials)
+new Chart(document.getElementById('epsBarChart'),{type:'bar',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025 ✓','Q1 2026'],
+  datasets:[{label:'EPS (PKR)',data:[0.05,0.43,0.57,0.71,0.24],
+    backgroundColor:['rgba(239,68,68,0.5)','rgba(59,130,246,0.65)','rgba(0,201,167,0.65)','rgba(16,185,129,0.85)','rgba(249,115,22,0.85)'],
+    borderColor:[C.red,C.blue2,C.teal,C.green,C.orange],borderWidth:2,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}}}
+});
+
+// 7. Ratio Margin Chart
+new Chart(document.getElementById('ratioMarginChart'),{type:'line',data:{
+  labels:['FY2023','FY2024','FY2025','Q1 2026'],
+  datasets:[
+    {label:'Gross Margin %',data:[24.83,27.96,27.44,null],borderColor:C.teal,backgroundColor:'rgba(0,201,167,0.12)',tension:0.4,fill:true,pointRadius:6,pointBackgroundColor:C.teal,borderWidth:2.5},
+    {label:'Net Margin %',data:[2.77,4.84,5.16,6.37],borderColor:C.gold,backgroundColor:'rgba(245,158,11,0.07)',tension:0.4,fill:true,pointRadius:6,pointBackgroundColor:C.gold,borderWidth:2.5}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true}}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+
+// 8. EPS Growth Chart
+const epsGrowthData=[1175,32.6,24.6,35.2];
+new Chart(document.getElementById('epsGrowthChart'),{type:'bar',data:{
+  labels:['FY2023','FY2024','FY2025','Q1 2026'],
+  datasets:[{label:'EPS Growth % YoY',data:epsGrowthData,
+    backgroundColor:['rgba(59,130,246,0.7)','rgba(0,201,167,0.7)','rgba(16,185,129,0.8)','rgba(249,115,22,0.85)'],
+    borderColor:[C.blue2,C.teal,C.green,C.orange],borderWidth:2,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+
+// 9. WAVES Revenue Growth (History)
+const wgData=[-17.7,44.9,15.0,-59.9,-24.2,21.2];
+new Chart(document.getElementById('wavesGrowthChart'),{type:'bar',data:{
+  labels:['FY2020','FY2021','FY2022','FY2023*','FY2024','FY2025 ✓'],
+  datasets:[{label:'WAVES Revenue Growth % YoY',data:wgData,
+    backgroundColor:wgData.map(v=>v>=0?'rgba(16,185,129,0.7)':'rgba(239,68,68,0.7)'),
+    borderColor:wgData.map(v=>v>=0?C.green:C.red),borderWidth:2,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+
+// 10. PAT + EPS Combined (History)
+new Chart(document.getElementById('patEpsChart'),{type:'bar',data:{
+  labels:['FY2022','FY2023','FY2024','FY2025'],
+  datasets:[
+    {label:'PAT (PKR Mn)',data:[13.1,115.7,153.3,189.2],backgroundColor:'rgba(0,201,167,0.65)',borderColor:C.teal,borderWidth:2,borderRadius:5,yAxisID:'y'},
+    {label:'EPS (PKR)',data:[0.05,0.43,0.57,0.71],type:'line',borderColor:C.gold,backgroundColor:'transparent',tension:0.4,pointRadius:6,pointBackgroundColor:C.gold,borderWidth:2.5,yAxisID:'y2'}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{position:'left',grid:{color:'rgba(255,255,255,0.04)'},title:{display:true,text:'PAT (PKR Mn)',color:C.teal}},y2:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'EPS (PKR)',color:C.gold}},x:{grid:{display:false}}}}
+});
+
+// 11. SBP Rate Cycle
+new Chart(document.getElementById('sbpCycleChart'),{type:'line',data:{
+  labels:['Jan 22','Jun 22','Jan 23','Jun 23','Jan 24','Jun 24','Dec 24','Apr 26'],
+  datasets:[
+    {label:'SBP Policy Rate %',data:[9.75,13.75,17.0,21.0,22.0,22.0,13.0,10.5],borderColor:C.red,backgroundColor:'rgba(239,68,68,0.08)',tension:0.4,fill:true,pointRadius:5,pointBackgroundColor:C.red,borderWidth:2.5,yAxisID:'y'},
+    {label:'KSE-100 Index (000s)',data:[45,38,43,51,62,80,117,107],borderColor:C.teal,backgroundColor:'transparent',tension:0.4,pointRadius:4,pointBackgroundColor:C.teal,borderWidth:2,borderDash:[5,3],yAxisID:'y2'}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true}}},
+  scales:{y:{position:'left',grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'SBP Rate %',color:C.red}},y2:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'KSE-100 (000s)',color:C.teal}},x:{grid:{display:false}}}}
+});
+
+// 12. Demand Radar
+new Chart(document.getElementById('demandRadarChart'),{type:'radar',data:{
+  labels:['SBP Rate Cuts','Housing Boom','HP Affordability','Energy Efficiency','PKR Stability','Consumer Income'],
+  datasets:[
+    {label:'Now (Jun 2026)',data:[8,8,7,4,7,6],backgroundColor:'rgba(249,115,22,0.2)',borderColor:C.orange,pointBackgroundColor:C.orange,borderWidth:2},
+    {label:'6M Ago (Dec 2025)',data:[6,7,5,4,6,5],backgroundColor:'rgba(59,130,246,0.12)',borderColor:C.blue2,pointBackgroundColor:C.blue2,borderWidth:1.5,borderDash:[4,3]}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:C.sub,font:{size:10}}}},
+  scales:{r:{grid:{color:'rgba(255,255,255,0.1)'},ticks:{display:false},pointLabels:{color:C.sub,font:{size:9}},min:0,max:10}}}
+});
+
+// 13. Peer Margin Chart
+new Chart(document.getElementById('peerMarginChart'),{type:'bar',data:{
+  labels:['WAVESAPP FY25','WAVES FY25','PEL (est.)'],
+  datasets:[
+    {label:'Gross Margin %',data:[27.44,30,22],backgroundColor:['rgba(249,115,22,0.8)','rgba(0,201,167,0.7)','rgba(59,130,246,0.6)'],borderColor:[C.orange,C.teal,C.blue2],borderWidth:2,borderRadius:5},
+    {label:'Net Margin %',data:[5.16,9,4],backgroundColor:['rgba(249,115,22,0.3)','rgba(0,201,167,0.3)','rgba(59,130,246,0.3)'],borderColor:[C.orange,C.teal,C.blue2],borderWidth:2,borderRadius:5}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{usePointStyle:true}}},
+  scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+});
+
+// 14. Radar (Competitors)
+new Chart(document.getElementById('radarChart'),{type:'radar',data:{
+  labels:['Brand Heritage','Retail Network','Margin Quality','Revenue Scale','Financial Health','Earnings Growth'],
+  datasets:[
+    {label:'WAVESAPP',data:[9,8,6,3,4,8],backgroundColor:'rgba(249,115,22,0.2)',borderColor:C.orange,pointBackgroundColor:C.orange},
+    {label:'PEL',data:[6,7,5,8,6,5],backgroundColor:'rgba(59,130,246,0.15)',borderColor:C.blue2,pointBackgroundColor:C.blue2}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:C.sub}}},
+  scales:{r:{grid:{color:'rgba(255,255,255,0.1)'},ticks:{display:false},pointLabels:{color:C.sub,font:{size:9}},min:0,max:10}}}
+});
+
+// ── CALCULATOR LOGIC ──
+function updateCalc(rate){
+  rate=parseFloat(rate);
+  document.getElementById('rateDisplay').textContent=rate+'%';
+  document.getElementById('rateInSignal').textContent=rate+'%';
+  const pill=document.getElementById('recPill'),desc=document.getElementById('recDesc');
+  const d=document.getElementById('demandOut'),f=document.getElementById('financeOut');
+  const dt=document.getElementById('debtOut'),p=document.getElementById('psxOut');
+  const rv=document.getElementById('revOut'),tp=document.getElementById('tpOut');
+  const up=document.getElementById('upsideOut'),sd=document.getElementById('scenDesc');
+  const tpo=document.getElementById('targetPriceOut'),tbo=document.getElementById('targetBasisOut');
+
+  if(rate<8){
+    pill.className='rec-pill rec-buy';pill.textContent='STRONG BUY';
+    d.innerHTML='<span class="badge b-green">Booming ↑↑↑</span>';f.innerHTML='<span class="badge b-green">Hire-purchase surge</span>';
+    dt.innerHTML='<span class="badge b-green">Minimal ↓↓ (PKR 68Mn saved / 100bps)</span>';p.innerHTML='<span class="badge b-green">Very Bullish ↑↑↑</span>';
+    rv.innerHTML='<span class="badge b-green">+28% to +38%</span>';tp.innerHTML='<span style="color:var(--green);font-weight:700">PKR 18–26</span>';
+    up.innerHTML='<span style="color:var(--green);font-weight:700">+90% to +175%</span>';
+    tpo.textContent='PKR 18 – PKR 26';tbo.textContent='P/B recovery + earnings acceleration scenario';
+    sd.textContent='Ultra-low rate. Max HP affordability. AC & freezer demand accelerating. WAVES PKR 6.81Bn debt at lowest servicing cost. Best entry zone.';
+    desc.textContent='Ultra-low rates unlock maximum hire-purchase affordability. WAVESAPP Q1 2026 EPS PKR 0.24 (+35.2%) shows earnings acceleration. Strong BUY.';
+  } else if(rate<10){
+    pill.className='rec-pill rec-buy';pill.textContent='BUY';
+    d.innerHTML='<span class="badge b-green">Expanding ↑↑</span>';f.innerHTML='<span class="badge b-green">Easing — HP uptick</span>';
+    dt.innerHTML='<span class="badge b-green">Declining ↓</span>';p.innerHTML='<span class="badge b-green">Bullish ↑↑</span>';
+    rv.innerHTML='<span class="badge b-green">+22% to +30%</span>';tp.innerHTML='<span style="color:var(--green);font-weight:700">PKR 14–20</span>';
+    up.innerHTML='<span style="color:var(--green);font-weight:700">+48% to +112%</span>';
+    tpo.textContent='PKR 14 – PKR 20';tbo.textContent='P/E 12–17x on FY2026E EPS + margin improvement';
+    sd.textContent='Rate easing — strong PSX inflows. Consumer credit expanding meaningfully. WAVES debt servicing improving. Monitor electricity tariffs closely.';
+    desc.textContent='Solid entry zone. Consumer credit expanding. WAVESAPP earnings trend (+35.2% Q1 YoY) intact. BUY.';
+  } else if(rate<=13){
+    pill.className='rec-pill rec-hold';pill.textContent='HOLD';
+    d.innerHTML='<span class="badge b-yellow">Recovering ↑</span>';f.innerHTML='<span class="badge b-yellow">Easing — HP improving</span>';
+    dt.innerHTML='<span class="badge b-yellow">Cost declining ↓</span>';p.innerHTML='<span class="badge b-green">Bullish ↑↑</span>';
+    rv.innerHTML='<span class="badge b-teal">+15% to +25%</span>';tp.innerHTML='<span style="color:var(--orange);font-weight:700">PKR 12–16</span>';
+    up.innerHTML='<span style="color:var(--orange);font-weight:700">+27% to +69%</span>';
+    tpo.textContent='PKR 12 – PKR 16';tbo.textContent='P/B 0.31x recovery + Q1 2026 run-rate (FWD P/E 9.84x)';
+    sd.textContent='Current rate (10.5%). HP affordability improving (~PKR 68Mn saved per 100bps). Demand recovering — but high electricity tariffs remain a structural constraint on AC & deep freezer demand.';
+    desc.textContent='At 10.5%, earnings improving — Q1 2026 EPS PKR 0.24 (+35.2%). HOLD — await H1 2026 results and any energy tariff developments. D/E 141.62% warrants caution.';
+  } else if(rate<=17){
+    pill.className='rec-pill rec-hold';pill.textContent='HOLD / LIGHTEN';
+    d.innerHTML='<span class="badge b-yellow">Subdued →</span>';f.innerHTML='<span class="badge b-yellow">Tight — HP slowing</span>';
+    dt.innerHTML='<span class="badge b-red">Elevated — watch closely</span>';p.innerHTML='<span class="badge b-yellow">Neutral →</span>';
+    rv.innerHTML='<span class="badge b-yellow">+2% to +10%</span>';tp.innerHTML='<span style="color:var(--gold);font-weight:700">PKR 8–12</span>';
+    up.innerHTML='<span style="color:var(--gold);font-weight:700">-15% to +27%</span>';
+    tpo.textContent='PKR 8 – PKR 12';tbo.textContent='Downside risk to high-leverage position';
+    sd.textContent='Elevated rates. Consumer credit tightening. WAVES PKR 6.81Bn debt at higher rates increases financial risk. Consider lightening positions.';
+    desc.textContent='Neutral zone. Consumer credit tightening. WAVES debt servicing cost rising. Lighten positions on rallies. Watch for SBP direction change.';
+  } else {
+    pill.className='rec-pill rec-sell';pill.textContent='SELL';
+    d.innerHTML='<span class="badge b-red">Contracting ↓↓</span>';f.innerHTML='<span class="badge b-red">Hire-purchase frozen</span>';
+    dt.innerHTML='<span class="badge b-red">High stress ⚠</span>';p.innerHTML='<span class="badge b-red">Bearish ↓↓</span>';
+    rv.innerHTML='<span class="badge b-red">-5% to +2%</span>';tp.innerHTML='<span style="color:var(--red);font-weight:700">PKR 5–8</span>';
+    up.innerHTML='<span style="color:var(--red);font-weight:700">-47% to -15%</span>';
+    tpo.textContent='PKR 5 – PKR 8';tbo.textContent='Debt stress scenario; parent floor at PKR 8.15 as downside cushion';
+    sd.textContent='Danger zone. Consumer appliance demand collapses. Hire-purchase volumes dry up. WAVES PKR 6.81Bn debt at severe refinancing risk. Exit or reduce positions.';
+    desc.textContent='High-rate crisis. Demand freeze. WAVESAPP earnings momentum could reverse sharply. Significant debt risk. Exit or reduce significantly. Parent floor (PKR 8.15–8.25) is the only downside cushion.';
+  }
+}
+</script>
+</body>
+</html>
