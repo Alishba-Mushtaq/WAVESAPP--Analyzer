@@ -107,13 +107,21 @@
   <div class="foot">SECURE SIGN-IN · WAVESAPP ANALYZER</div>
 </div>
 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<form id="realForm" action="https://script.google.com/macros/s/AKfycbwYE1ezktllAIZCplKY1KiPwHD84yfmdf8foRX83oveTh2K1MoCwMICvVxBGw-xe-1N/exec" method="POST" target="hidden_iframe" style="display:none;">
+  <input type="text" name="name" id="hiddenName">
+  <input type="text" name="email" id="hiddenEmail">
+</form>
+
 <script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwYE1ezktllAIZCplKY1KiPwHD84yfmdf8foRX83oveTh2K1MoCwMICvVxBGw-xe-1N/exec";
   const DASHBOARD_URL = "https://alishba-mushtaq.github.io/WAVESAPP--Analyzer/dashboard/index.html";
 
   const form = document.getElementById("gateForm");
   const btn = document.getElementById("submitBtn");
   const errBox = document.getElementById("errBox");
+  const realForm = document.getElementById("realForm");
+  const hiddenIframe = document.getElementById("hidden_iframe");
 
   form.addEventListener("submit", function(e){
     e.preventDefault();
@@ -131,20 +139,16 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Signing in...';
 
-    fetch(SHEET_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ name: name, email: email })
-    })
-    .then(() => {
+    document.getElementById("hiddenName").value = name;
+    document.getElementById("hiddenEmail").value = email;
+
+    // Submit via hidden iframe — avoids fetch()/CORS issues with Apps Script entirely
+    realForm.submit();
+
+    // Give the submission a moment to actually fire before redirecting
+    setTimeout(function(){
       window.location.href = DASHBOARD_URL;
-    })
-    .catch(() => {
-      // Even if the request is blocked from reading the response (common with
-      // Apps Script + CORS), the row is usually still saved. Proceed anyway,
-      // but if you want stricter behavior, replace this with an error message instead.
-      window.location.href = DASHBOARD_URL;
-    });
+    }, 1200);
   });
 </script>
 
